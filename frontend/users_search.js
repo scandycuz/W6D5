@@ -1,3 +1,5 @@
+const FollowToggle = require('./follow_toggle');
+
 class UsersSearch {
   constructor(el) {
     this.$el = el;
@@ -7,7 +9,6 @@ class UsersSearch {
   }
 
   handleInput(event) {
-    console.log(this);
     if (this.$input.val() === "") {
       this.renderResults([]);
       return;
@@ -23,12 +24,21 @@ class UsersSearch {
   }
 
   renderResults(users) {
+    console.log(users);
     this.$ul.empty();
     users.forEach( (user) => {
       let $listItem = (
-        `<li><a href=\"/users/${user.id}\">${user.username}</a></li>`
+        `<li>
+          <a href=\"/users/${user.id}\">${user.username}</a>
+        </li>`
       );
+      let $buttonItem = $(`<button></button>`);
+      new FollowToggle($buttonItem, {
+        userId: user.id,
+        followState: user.followed ? "followed" : "unfollowed"
+      });
       this.$ul.append($listItem);
+      this.$ul.append($buttonItem);
     });
   }
 }

@@ -7,11 +7,9 @@ class TweetsController < ApplicationController
 
     @tweet = current_user.tweets.build(tweet_params)
 
-    if @tweet.save
-      redirect_to request.referrer
-    else
-      # Lazy: even respond with JSON to invalid HTML request.
-      render json: @tweet.errors.full_messages, status: 422
+    respond_to do |format|
+      format.html { render :tweet }
+      format.json { render :show }
     end
   end
 
